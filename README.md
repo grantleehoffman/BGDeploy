@@ -39,5 +39,5 @@ Example
 -------
 Switch the A record alias of A_record.domain.com from foo-elb endpoint address to bar-elb endpoint address.
 
-	bgswitch -r us-west-1 -z domain.com -n Arecord.domain.com -e foo-elb -t A -c bar-elb
+	bgswitch -r us-west-1 -z domain.com -n Arecord.domain.com -c foo-elb -t A -e bar-elb
 
