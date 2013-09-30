@@ -1,1 +1,1 @@
-__all__ = ['deploy','DNS']
+__all__ = ['deployment','DNS']
