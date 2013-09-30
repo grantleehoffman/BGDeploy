@@ -1,13 +1,5 @@
-#!/usr/bin/env python
-'''
-Created on Sep 24, 2013
 
-@author: Grant Hoffman
-@email: grantleehoffman@gmail.com
-github: github.com/grantleehoffman
 
-'''
-#from project import DNS
 from DNS import DNS
 
 class deployment:
@@ -24,7 +16,6 @@ class deployment:
         updaterecord = DNS(recordname, DNSZone, recordtype, region, currentelbname)
         currentelbendpoint = updaterecord.getelbinfo(region, currentelbname)
         newelbendpoint = updaterecord.getelbinfo(region, newelbname)
-        
         #updatelb = DNS(recordname,DNSZone,recordtype,newelbendpoint,region,newelbname)
         updaterecord.deleterecord(recordname, DNSZone, recordtype, currentelbendpoint)
         updaterecord.createrecord(recordname, DNSZone, recordtype, newelbendpoint)
