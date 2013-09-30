@@ -11,11 +11,6 @@ Setup.py package installation
 
 Parameters
 ----------
-python setup.py install
-
-
-Parameters
-----------
 
 Automated Blue Green Route53 Cutover CLI
 
