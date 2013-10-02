@@ -3,16 +3,17 @@ import boto.ec2.elb
 import re
 import sys
 
-class DNS:
+class Route53:
     '''
-    Class for Deleting, Creating, Commiting DNS
+    Class for Deleting, Creating, and Commiting DNS from AWS Route53 Service
     '''
-    def __init__(self, recordname, zone, recordtype, awsregion, elbname):
+    def __init__(self, recordname, zone, recordtype, ttl, awsregion, elbname):
         self.zone = zone
         self.recordtype = recordtype
         self.recordname = recordname
         self.awsregion = awsregion
         self.elbname = elbname
+        self.ttl = ttl
         
         #Create connections to AWS
         try:
@@ -35,7 +36,7 @@ class DNS:
         #Create recordset list
         self.recordset = boto.route53.record.ResourceRecordSets(self.conn, hosted_zone_id=self.zoneid)        
 
-    def getelbinfo(self, awsregion, elbname):
+    def getelbinfo(self, elbname):
         
         #### Get current elb info
         currentelb = self.elbconn.get_all_load_balancers(load_balancer_names=elbname)
@@ -44,20 +45,20 @@ class DNS:
             self.elbendpoint = e.canonical_hosted_zone_name
         return self.elbendpoint
 
-    def deleterecord(self, recordname, zone, recordtype, elbendpoint, ttl="30"):
+    def deleterecord(self, elbendpoint):
         try:
-            deleterecord = self.recordset.add_change("DELETE", recordname, recordtype, ttl, identifier=self.awsregion, region=self.awsregion)
+            deleterecord = self.recordset.add_change("DELETE", self.recordname, self.recordtype, self.ttl, identifier=self.awsregion, region=self.awsregion)
             deleterecord.set_alias(self.elb_zone_id, alias_dns_name=elbendpoint)
-            print "record %s deleted from changelist" % recordname 
+            print "record %s %s %s %s deleted from changelist" % (elbendpoint, self.recordtype, self.ttl, self.recordname)
         except:
             print "Error finding record to delete"
             sys.exit()
             
-    def createrecord(self, recordname, zone, recordtype, elbendpoint, ttl="30"):
+    def createrecord(self,elbendpoint):
         try:
-            updaterecord = self.recordset.add_change("CREATE", recordname, recordtype, ttl, identifier=self.awsregion, region=self.awsregion)
+            updaterecord = self.recordset.add_change("CREATE", self.recordname, self.recordtype, self.ttl, identifier=self.awsregion, region=self.awsregion)
             updaterecord.set_alias(self.elb_zone_id, alias_dns_name=elbendpoint)
-            print "record %s added to changelist" % recordname
+            print "record %s %s %s %s added to changelist" % (elbendpoint, self.recordtype, self.ttl, self.recordname)
         except:
             print "Error creating record"
             sys.exit()

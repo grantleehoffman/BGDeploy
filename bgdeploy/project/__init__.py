@@ -1,1 +1,1 @@
-__all__ = ['deployment', 'DNS']
+__all__ = ['namerecord', 'Route53']
