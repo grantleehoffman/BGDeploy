@@ -4,15 +4,39 @@ BGDeploy
 
 Install
 -------
-Setup.py package installation
+__Setup.py package installation__
 
 	python setup.py install
 
+Setup
+-----
+__IAM Credential Access__
+1. Use IAM Instance Based Roles with access to ELB (Read-only) and Route53 (Read/Write)
+
+Or
+
+1. Create an IAM user with access to ELB (Read-only) & Route53(Read/Write)
+2. Create a Access Key for the user and add the credentials to either of the following:
+
+* AWS\_SECRET\_ACCESS\_KEY & AWS\_ACCESS\_KEY\_ID environmental variables
+
+```
+export AWS_ACCESS_KEY_ID=<your access key>
+export AWS_SECRET_ACCESS_KEY=<your secret key>
+```
+
+* Boto config file at ~/.boto or /etc/boto.cfg for all system users
+
+```
+[Credentials]
+aws_access_key_id = <your access key>
+aws_secret_access_key = <your secret key>
+```
 
 Parameters
 ----------
 
-Automated Blue/Green Route53 Cutover CLI
+__Automated Blue/Green Route53 Cutover CLI__
 
 	usage: bgswitch [-h] [-v] [-e CURRENTELBNAME] [-u UPDATEELBNAME] -z DNSZONE -n
 	                RECORDNAME [-t RECORDTYPE] [-r REGION] [-l TTL]
