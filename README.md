@@ -1,6 +1,7 @@
 BGDeploy
 ========
-
+Executes the Switching of a Route53 A-Record ALIAS, from one ELB to another.
+This can be used after automated testing to automate Blue/Green cutover or DNS automated failover to another ELB.
 
 Install
 -------
@@ -10,22 +11,23 @@ __Setup.py package installation__
 
 Setup
 -----
-__IAM Credential Access__
+__Access Using IAM Credentials__
+
 1. Use IAM Instance Based Roles with access to ELB (Read-only) and Route53 (Read/Write)
 
-Or
+__Or__
 
 1. Create an IAM user with access to ELB (Read-only) & Route53(Read/Write)
 2. Create a Access Key for the user and add the credentials to either of the following:
 
-* AWS\_SECRET\_ACCESS\_KEY & AWS\_ACCESS\_KEY\_ID environmental variables
+* AWS\_ACCESS\_KEY\_ID & AWS\_SECRET\_ACCESS\_KEY environmental variables
 
 ```
 export AWS_ACCESS_KEY_ID=<your access key>
 export AWS_SECRET_ACCESS_KEY=<your secret key>
 ```
 
-* Boto config file at ~/.boto or /etc/boto.cfg for all system users
+* Boto config file at ~/.boto for user based access or /etc/boto.cfg for all system users
 
 ```
 [Credentials]
@@ -37,6 +39,7 @@ Parameters
 ----------
 
 __Automated Blue/Green Route53 Cutover CLI__
+
 
 	usage: bgswitch [-h] [-v] [-e CURRENTELBNAME] [-u UPDATEELBNAME] -z DNSZONE -n
 	                RECORDNAME [-t RECORDTYPE] [-r REGION] [-l TTL]
@@ -63,7 +66,7 @@ __Automated Blue/Green Route53 Cutover CLI__
 
 Example
 -------
-Switch the A record alias of Arecord.domain.com from "foo-elb" endpoint address to the updated endpoint address of "bar-elb".
+Switch the A record alias of Arecord.domain.com from the "foo-elb" ELB to the updated endpoint address of the "bar-elb" ELB.
 
 	bgswitch -r us-west-1 -z domain.com -n Arecord.domain.com -e foo-elb -u bar-elb
 
